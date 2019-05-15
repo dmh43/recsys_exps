@@ -1,3 +1,8 @@
+cimport numpy as np
+import numpy as np
+from surprise.utils import get_rng
+from surprise.prediction_algorithms.predictions import PredictionImpossible
+
 class RestrictedSVD():
   def __init__(self, n_factors=100, n_epochs=20, biased=True, init_mean=0,
          init_std_dev=.1, lr_all=.005,
