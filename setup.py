@@ -32,7 +32,7 @@ extensions = [
   ]
 
 if USE_CYTHON:
-  ext_modules = cythonize(extensions)
+  ext_modules = cythonize(extensions, gdb_debug=True)
   cmdclass.update({'build_ext': build_ext})
 else:
   ext_modules = extensions

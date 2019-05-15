@@ -30,9 +30,9 @@ class SlopeOneFullSVDDev(AlgoBase):
         self.dev[item_2][item_1] += ratings_lookup[item_2] - ratings_lookup[item_1]
         self.cnts[item_1][item_2] += 1
         self.cnts[item_2][item_1] += 1
-    dev_tuples = (i_1, i_2, self.dev[i_1][i_2]
-                  for i_2 in self.dev[i_1]
-                  for i_1 in self.dev)
+    dev_tuples = [(i_1, i_2, self.dev[i_1][i_2])
+                  for i_1 in self.dev
+                  for i_2 in self.dev[i_1]]
     self.dev_svd = RestrictedSVD()(dev_tuples)
     return self
 

@@ -51,8 +51,8 @@ class RestrictedSVD():
     cdef double reg_qi = self.reg_qi
     self.global_mean = global_mean
     rng = get_rng(self.random_state)
-    self.num_users = max(u for u, i, r in train_tuples)
-    self.num_items = max(i for u, i, r in train_tuples)
+    self.num_users = max(u for u, i, r in train_tuples) + 1
+    self.num_items = max(i for u, i, r in train_tuples) + 1
     bu = np.zeros(self.num_users, np.double)
     bi = np.zeros(self.num_items, np.double)
     pu = rng.normal(self.init_mean, self.init_std_dev,
@@ -65,7 +65,6 @@ class RestrictedSVD():
       if self.verbose:
         print("Processing epoch {}".format(current_epoch))
       for u, i, r in train_tuples:
-
         # compute current error
         dot = 0  # <q_i, p_u>
         for f in range(self.n_factors):
@@ -90,8 +89,8 @@ class RestrictedSVD():
     self.qi = qi
 
   def estimate(self, u, i):
-    known_user = u < self.num_users
-    known_item = i < self.num_items
+    known_user = u < self.num_users if isinstance(u, int) else False
+    known_item = i < self.num_items if isinstance(i, int) else False
     if self.biased:
       est = self.global_mean
       if known_user:
