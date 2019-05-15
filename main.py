@@ -10,7 +10,6 @@ from rec.baseline import Baseline
 from rec.slope_one_full import SlopeOneFull
 from rec.slope_one import SlopeOne
 from rec.slope_one_weighted import SlopeOneWeighted
-from rec.slope_one_var import SlopeOneVar
 
 def main():
   data = Dataset.load_builtin('ml-100k')
