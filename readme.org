@@ -1,0 +1,3 @@
+* Experiments in Recsys
+- SlopeOne and variants
+- SVD and matrix factorization based methods
