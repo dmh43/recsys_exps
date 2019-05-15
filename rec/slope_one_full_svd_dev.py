@@ -4,6 +4,8 @@ from itertools import combinations
 import numpy as np
 from surprise import AlgoBase
 
+from .restricted_svd import RestrictedSVD
+
 class SlopeOneFullSVDDev(AlgoBase):
   def __init__(self):
     AlgoBase.__init__(self)
@@ -11,6 +13,7 @@ class SlopeOneFullSVDDev(AlgoBase):
     self.u_mean = None
     self.dev = None
     self.cnts = None
+    self.dev_svd = None
 
   def fit(self, trainset):
     AlgoBase.fit(self, trainset)
@@ -27,7 +30,7 @@ class SlopeOneFullSVDDev(AlgoBase):
         self.dev[item_2][item_1] += ratings_lookup[item_2] - ratings_lookup[item_1]
         self.cnts[item_1][item_2] += 1
         self.cnts[item_2][item_1] += 1
-    self.dev_svd = svd(self.dev)
+    self.dev_svd = RestrictedSVD(self.dev)
     return self
 
   def estimate(self, u, i):

@@ -20,6 +20,10 @@ class RestrictedSVD():
     self.random_state = random_state
     self.verbose = verbose
 
+  def __call__(self, train_tuples):
+    self.fit(train_tuples)
+    return self.estimate
+
   def fit(self, train_tuples):
     self.sgd(train_tuples)
     return self
