@@ -30,21 +30,21 @@ class SlopeOneFullSVDDev(AlgoBase):
         self.dev[item_2][item_1] += ratings_lookup[item_2] - ratings_lookup[item_1]
         self.cnts[item_1][item_2] += 1
         self.cnts[item_2][item_1] += 1
-    dev_tuples = [(i_1, i_2, self.dev[i_1][i_2])
+    dev_tuples = [(i_1, i_2, self.dev[i_1][i_2] / self.cnts[i_1][i_2])
                   for i_1 in self.dev
                   for i_2 in self.dev[i_1]]
-    self.dev_svd = RestrictedSVD()(dev_tuples)
+    self.dev_svd = RestrictedSVD(n_factors=100)(dev_tuples)
     return self
 
   def estimate(self, u, i):
     devs = [self.dev_svd(i, item)
             for item in self.rating_lookup_by_user[u]]
     ratings = self.rating_lookup_by_user[u].values()
-    cnts = [self.cnts[i][item]
+    cnts = [self.cnts[i][item] or 1
             for item in self.rating_lookup_by_user[u]]
     total_cnts = sum(cnts)
     if total_cnts > 0:
-      return sum(dev + cnt * rating
+      return sum(cnt * (dev + rating)
                  for cnt, dev, rating in zip(cnts, devs, ratings)) / total_cnts
     else:
       return self.u_mean[u]
